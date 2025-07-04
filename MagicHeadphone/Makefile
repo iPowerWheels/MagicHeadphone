@@ -11,9 +11,9 @@ SRCS = main.c core.c
 OBJS = $(SRCS:.c=.o)
 TARGET = MagicHeadphone
 
-# Fuente y ejecutable para mix_wav con -lsndfile
-MIX_SRC = mix_wav.c
-MIX_TARGET = mix_wav
+# Fuente y ejecutable para MagicMix con -lsndfile
+MIX_SRC = MagicMix.c
+MIX_TARGET = MagicMix
 
 all: $(TARGET) $(MIX_TARGET)
 

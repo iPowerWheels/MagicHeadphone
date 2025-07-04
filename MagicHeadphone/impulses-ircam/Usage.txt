@@ -1,0 +1,12 @@
+Usage
+IRC_RAWorCompensated_Subject_Azimuth_Elevation
+Azimuth
+90 - 270°
+135 - 45°
+150 - 330°
+180 - 0°
+210 - 30°
+270 - 90°
+Elevation
+0 is 0
+330 is -30° below your head
