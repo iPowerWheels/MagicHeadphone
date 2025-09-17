@@ -1,5 +1,5 @@
 Everything from MIT compensated at 48 kHz
-Amplified to -5.0 dB except LFE Channel
+Amplified to -5.0 dB except LFE Channel which amplificated to +7.0 dB
 1. Left (L): Azimuth -30°, Elevation 0°  
 2. Right (R): Azimuth +30°, Elevation 0°  
 3. Center (C): Azimuth   0°, Elevation 0°  
