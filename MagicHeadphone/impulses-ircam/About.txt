@@ -2,6 +2,7 @@ Subject 1002
 9.1.6 Layout
 Resampled to 48 kHz
 Amplification not moved
+Except impulse-4 which has amplified to +5.0 dB
 
 Left (L) — Azimuth −30°, Elev 0° → T150_P000
 IRC_xxxx_R_R0195_T150_P000.WAV
