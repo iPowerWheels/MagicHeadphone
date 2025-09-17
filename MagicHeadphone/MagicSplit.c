@@ -4,7 +4,7 @@
 
 #define CHANNELS_IN 6
 #define CHANNELS_OUT 2
-#define BLOCK_SIZE 2048
+#define BLOCK_SIZE 512
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {

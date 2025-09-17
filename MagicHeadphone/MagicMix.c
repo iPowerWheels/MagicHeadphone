@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <sndfile.h>
 
-#define BUFFER_LEN 1024  // Number of frames read in each iteration
+#define BUFFER_LEN 512  // Number of frames read in each iteration
 
 // Function to clamp a sample to the range [-1.0, 1.0]
-// Uncomment this otherwise warning won't allow compilse'
 /*static float clamp(float sample) {
   if (sample > 1.0f)
     return 1.0f;

@@ -1,0 +1,18 @@
+Everything from MIT compensated at 48 kHz
+Amplified to -5.0 dB except LFE Channel
+1. Left (L): Azimuth -30°, Elevation 0°  
+2. Right (R): Azimuth +30°, Elevation 0°  
+3. Center (C): Azimuth   0°, Elevation 0°  
+4. LFE: Azimuth   0°, Elevation -30°  
+5. Left Surround (Ls): Azimuth -110°, Elevation 0°  
+6. Right Surround (Rs): Azimuth +110°, Elevation 0°  
+7. Left Rear Surround (Lrs): Azimuth -135°, Elevation 0°  
+8. Right Rear Surround (Rrs): Azimuth +135°, Elevation 0°  
+9. Left Wide (Lw): Azimuth -60°, Elevation 0°  
+10. Right Wide (Rw): Azimuth +60°, Elevation 0°  
+11. Left Front Height (Lfh): Azimuth -30°, Elevation +40°  
+12. Right Front Height (Rfh): Azimuth +30°, Elevation +40°  
+13. Left Top Middle (Ltm): Azimuth -90°, Elevation +80°  
+14. Right Top Middle (Rtm): Azimuth +90°, Elevation +80°  
+15. Left Rear Height (Lrh): Azimuth -135°, Elevation +50°  
+16. Right Rear Height (Rrh): Azimuth +135°, Elevation +50°

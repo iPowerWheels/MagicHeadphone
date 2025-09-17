@@ -1,0 +1,36 @@
+Subject 1002
+9.1.6 Layout
+Resampled to 48 kHz
+Amplification not moved
+
+Left (L) — Azimuth −30°, Elev 0° → T150_P000
+IRC_xxxx_R_R0195_T150_P000.WAV
+Right (R) — Azimuth +30°, Elev 0° → T210_P000
+IRC_xxxx_R_R0195_T210_P000.WAV
+Center (C) — Azimuth 0°, Elev 0° → T180_P000
+IRC_xxxx_R_R0195_T180_P000.WAV
+LFE — omni / no aplica → T---_P---
+Left Surround (Ls) — Azimuth −110°, Elev 0° → T070_P000
+IRC_xxxx_R_R0195_T070_P000.WAV
+Right Surround (Rs) — Azimuth +110°, Elev 0° → T290_P000
+IRC_xxxx_R_R0195_T290_P000.WAV
+Left Rear Surround (Lrs) — Azimuth −135°, Elev 0° → T045_P000
+IRC_xxxx_R_R0195_T045_P000.WAV
+Right Rear Surround (Rrs) — Azimuth +135°, Elev 0° → T315_P000
+IRC_xxxx_R_R0195_T315_P000.WAV
+Left Wide (Lw) — Azimuth −60°, Elev 0° → T120_P000
+IRC_xxxx_R_R0195_T120_P000.WAV
+Right Wide (Rw) — Azimuth +60°, Elev 0° → T240_P000
+IRC_xxxx_R_R0195_T240_P000.WAV
+Left Front Height (Lfh) — Azimuth −30°, Elev +40° → T150_P040
+IRC_xxxx_R_R0195_T150_P040.WAV
+Right Front Height (Rfh) — Azimuth +30°, Elev +40° → T210_P040
+IRC_xxxx_R_R0195_T210_P040.WAV
+Left Top Middle (Ltm) — Azimuth −90°, Elev +80° → T090_P080
+IRC_xxxx_R_R0195_T090_P080.WAV
+Right Top Middle (Rtm) — Azimuth +90°, Elev +80° → T270_P080
+IRC_xxxx_R_R0195_T270_P080.WAV
+Left Rear Height (Lrh) — Azimuth −135°, Elev +50° → T045_P050
+IRC_xxxx_R_R0195_T045_P050.WAV
+Right Rear Height (Rrh) — Azimuth +135°, Elev +50° → T315_P050
+IRC_xxxx_R_R0195_T315_P050.WAV

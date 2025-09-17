@@ -33,6 +33,7 @@ $(MIX_TARGET): $(MIX_SRC)
 $(SPLIT_TARGET): $(SPLIT_SRC)
 	$(CC) $(CFLAGS) -o $(SPLIT_TARGET) $(SPLIT_SRC) $(LIBS)
 
+# Check output/song 4 for LFE signal
 run: $(TARGET) $(MIX_TARGET) $(SPLIT_TARGET)
 	./$(SPLIT_TARGET) input.wav
 	./$(TARGET)
