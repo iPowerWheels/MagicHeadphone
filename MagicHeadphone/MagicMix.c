@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
   free(ininfos);
   sf_close(outfile);
 
-  printf("Mixing complete, output file saved to %s.\n", output_filename);
+  // printf("Mixing complete, output file saved to %s.\n", output_filename);
   return 0;
 }
 

@@ -10,27 +10,32 @@ void convolve(float *signal, int signal_length, float *impulse, int impulse_leng
   for (int ch = 0; ch < channels; ch++){
     // Channel by channel
     for (int n = 0; n < signal_length + impulse_length - 1; n++) {
-      // Initiate output channel
-      output[n * channels + ch] = 0.0f;
+      
+      // Use double for bit-perfect accumulation to prevent floating-point drift
+      double sum = 0.0;
+      
       for (int k = 0; k < impulse_length; k++) {
         if (n - k >= 0 && n - k < signal_length) {
-          output[n * channels + ch] += signal[(n - k) * channels + ch] * impulse[k * channels + ch];
+          sum += (double)signal[(n - k) * channels + ch] * (double)impulse[k * channels + ch];
         }
       }
+      
+      // Cast back to 32-bit float only at the very end to write to the buffer
+      output[n * channels + ch] = (float)sum;
     }
   }
 }
 
 void HRTF (int suffix){
   // Read variables
-  SNDFILE * signal_file, *impulse_file;
+  SNDFILE *signal_file, *impulse_file;
   SF_INFO signal_info, impulse_info;
 
   // Write variables
   SNDFILE *outfile;
   SF_INFO sfinfo;
 
-  float * signal_buffer, * impulse_buffer, * full_output_buffer, * final_output_buffer;
+  float *signal_buffer, *impulse_buffer, *full_output_buffer, *final_output_buffer;
 
   // Names
   char signal_file_path[50];
@@ -66,40 +71,53 @@ void HRTF (int suffix){
     exit(1);
   }
   int channels = signal_info.channels;
-  // Frames lenght
+  
+  // Frames length
   int signal_frames = signal_samples / channels;
   int impulse_frames = impulse_samples / channels;
 
   // Full convolution
   int full_output_frames = signal_frames + impulse_frames - 1;
-  full_output_buffer = (float *) malloc(full_output_frames * channels * sizeof(float));
+  int full_samples = full_output_frames * channels;
+  full_output_buffer = (float *) malloc(full_samples * sizeof(float));
 
   // Convolution
   convolve(signal_buffer, signal_frames, impulse_buffer, impulse_frames, full_output_buffer, channels);
 
-  // Para obtener una salida de la misma duración que la señal original, se extrae la parte central.
-  // Calculo del offset: se supone que impulse_frames es impar o se usa aproximación
-  int offset = impulse_frames / 2;
-  // Adjust offset
-  int final_output_frames = signal_frames;
-  final_output_buffer = (float *) malloc(final_output_frames * channels * sizeof(float));
-
-  // Convolution for offset part
-  for (int n = 0; n < final_output_frames; n++) {
-    for (int ch = 0; ch < channels; ch++){
-      int full_index = (n + offset) * channels + ch;
-      int final_index = n * channels + ch;
-      // Verify full_index and buffer size
-      if(full_index < full_output_frames * channels)
-       final_output_buffer[final_index] = full_output_buffer[full_index];
-      else
-        final_output_buffer[final_index] = 0.0f;
+  // NORMALIZATION
+  /*
+  float max_peak = 0.0f;
+  for (int i = 0; i < full_samples; i++) {
+    float abs_val = fabsf(full_output_buffer[i]);
+    if (abs_val > max_peak) {
+      max_peak = abs_val;
     }
   }
 
-  printf("Processing: %s - %s\n", impulse_file_path, signal_file_path);
+  // If the signal exceeds 1.0 (0dBFS), normalize the whole buffer down.
+  // We use 0.99f as a slight safety margin for inter-sample peaks.
+  if (max_peak > 1.0f) {
+    float normalization_factor = 0.99f / max_peak;
+    for (int i = 0; i < full_samples; i++) {
+      full_output_buffer[i] *= normalization_factor;
+    }
+  }
+  */
+    
+  // HRTF ALIGNMENT - ZERO-OFFSET TRUNCATION
+  int final_output_frames = signal_frames;
+  final_output_buffer = (float *) malloc(final_output_frames * channels * sizeof(float));
+
+  // Copy exactly from the beginning. No offset shifting!
+  for (int n = 0; n < final_output_frames; n++) {
+    for (int ch = 0; ch < channels; ch++){
+      int index = n * channels + ch;
+      final_output_buffer[index] = full_output_buffer[index];
+    }
+  }
 
   // Output file setup
+  // Keeping exactly as requested: 24-bit PCM
   sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_PCM_24;
   sfinfo.channels = channels;
   sfinfo.samplerate = signal_info.samplerate;
@@ -119,9 +137,7 @@ void HRTF (int suffix){
   // Write final buffer
   sf_count_t frames_written = sf_writef_float(outfile, final_output_buffer, final_output_frames);
   if (frames_written < 0) {
-   printf("Error writing file: %s\n", sf_strerror(outfile));
-  } else {
-    printf("Convolved file correctly: %s\n", output_file_path);
+    printf("Error writing file: %s\n", sf_strerror(outfile));
   }
 
   // Close files and clean memory

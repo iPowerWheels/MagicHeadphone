@@ -29,6 +29,8 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+extern char **environ;
+
 // Usage channel number - e.g. Left:1
 void
 HRTF (int suffix);
@@ -40,27 +42,73 @@ void
     return NULL;
 }
 
+void
+run_process(const char *path, char *const argv[]) {
+    pid_t pid;
+    int status;
+
+    if (posix_spawn(&pid, path, NULL, NULL, argv, environ) != 0) {
+        perror("posix_spawn failed");
+        exit(EXIT_FAILURE);
+    }
+
+    if (waitpid(pid, &status, 0) == -1) {
+        perror("waitpid failed");
+        exit(EXIT_FAILURE);
+    }
+
+    if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
+        fprintf(stderr, "Process %s failed\n", path);
+        exit(EXIT_FAILURE);
+    }
+}
+
 int
 main (int argc __attribute__((unused)),
       char *argv[] __attribute__((unused)))
 {
-  printf ("Welcome!\n");
-  pthread_t threads[6];
-  int suffixes[6];
+    printf("Welcome!\n");
 
-  // Crear hilos para llamar a HRTF del 1 al 6
-  for (int i = 0; i < 6; i++) {
-    suffixes[i] = i + 1; // Sufijos del 1 al 6
-    if (pthread_create(&threads[i], NULL, thread_function, &suffixes[i]) != 0) {
-      perror("Failed to create thread");
-      return EXIT_FAILURE;
+    // MagicSplit
+    char *split_args[] = {"./MagicSplit", "input.wav", NULL};
+    run_process("./MagicSplit", split_args);
+
+    // MagicHeadphone
+    pthread_t threads[6];
+    int suffixes[6];
+
+    for (int i = 0; i < 6; i++) {
+        suffixes[i] = i + 1;
+        if (pthread_create(&threads[i], NULL, thread_function, &suffixes[i]) != 0) {
+            perror("Failed to create thread");
+            return EXIT_FAILURE;
+        }
     }
-  }
 
-  // Esperar a que todos los hilos terminen
-  for (int i = 0; i < 6; i++) {
-    pthread_join(threads[i], NULL);
-  }
+    for (int i = 0; i < 6; i++) {
+        pthread_join(threads[i], NULL);
+    }
 
-  return EXIT_SUCCESS;
+    // MagicMix
+    char *mix_args[9];
+    mix_args[0] = "./MagicMix";
+    mix_args[1] = "final-output.wav";
+
+    for (int i = 0; i < 6; i++) {
+        char *name = malloc(32);
+        snprintf(name, 32, "output-%d.wav", i + 1);
+        mix_args[i + 2] = name;
+    }
+    mix_args[8] = NULL;
+
+    run_process("./MagicMix", mix_args);
+    
+    for (int i = 0; i < 6; i++) {
+        free(mix_args[i + 2]);
+    }
+
+    printf("Your file is ready.\n");
+
+    return EXIT_SUCCESS;
 }
+

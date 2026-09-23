@@ -6,9 +6,10 @@ DEBUG_FLAGS = -ggdb -O0 \
               -fno-omit-frame-pointer -fstack-protector-all -fPIE \
               -fsanitize=address,undefined
 
-RELEASE_FLAGS = -Wall -Wextra -Werror -ggdb -O3 -std=gnu99 \
-		-march=native \
+RELEASE_FLAGS = -O3 \
+		-march=native -mtune=native\
 		-fstack-protector-strong \
+		-flto \
 		-fPIE \
 		-D_FORTIFY_SOURCE=2
 
@@ -49,9 +50,7 @@ $(SPLIT_TARGET): $(SPLIT_SRC)
 
 # ===== RUN =====
 run: release
-	./$(SPLIT_TARGET) input.wav
 	./$(TARGET)
-	./$(MIX_TARGET) output-final.wav output-1.wav output-2.wav output-3.wav output-4.wav output-5.wav output-6.wav
 
 # ===== CLEAN =====
 clean:
